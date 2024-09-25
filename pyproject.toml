@@ -1,0 +1,35 @@
+[tool.poetry]
+name = "tag-recommender"
+version = "0.1.0"
+description = "A simple API to recommend similar hashtags"
+authors = ["George Perakis <perakisgeorgios@gmail.com>"]
+readme = "README.md"
+license = "MIT"
+
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pydantic = "^2.9.1"
+fastapi = "^0.114.1"
+pandas = "^2.2.2"
+uvicorn = "^0.30.6"
+scikit-learn = "^1.5.2"
+jupyter = "^1.1.1"
+pytrec-eval = "^0.5"
+gensim = "^4.3.3"
+pytest = "^8.3.3"
+tqdm = "^4.66.5"
+datasketch = "^1.6.5"
+mmh3 = "^5.0.1"
+matplotlib = "^3.9.2"
+bertopic = "^0.16.3"
+python-igraph = "^0.11.6"
+
+[project.urls]
+
+Repository = "https://github.com/gperakis/tag-recommender"
+Issues = "https://github.com/gperakis/tag-recommender/issues"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
