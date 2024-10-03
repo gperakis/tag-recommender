@@ -1,0 +1,91 @@
+import re
+
+from tqdm import tqdm
+
+
+def split_tags(tags_str: str) -> list[str]:
+    """
+    Splits a string of tags into a list.
+
+    Parameters
+    ----------
+    tags_str : str
+
+    Returns
+    -------
+    list[str]
+        A list of individual tags.
+    """
+    if tags_str:
+        return [tag.strip() for tag in tags_str.split(",") if tag.strip()]
+    return []
+
+
+def to_snake_case(text: str) -> str:
+    """
+    Convert a string to snake_case.
+
+    Parameters
+    ----------
+    text : str
+        The input string to convert.
+
+    Returns
+    -------
+    str
+        The input string converted to snake_case.
+    """
+    # If it's already in snake_case, return it
+    if re.match(r"^[a-z0-9_]+$", text):
+        return text
+
+    # Handle PascalCase or camelCase
+    text = re.sub(r"(?<!^)(?=[A-Z])", "_", text).lower()
+
+    # Handle spaces, dashes, and multiple underscores
+    text = re.sub(r"[\s\-]+", "_", text)
+
+    # Remove any multiple underscores that may occur
+    text = re.sub(r"_+", "_", text)
+
+    # Strip leading or trailing underscores if present
+    return text.strip("_").strip()
+
+
+def normalize_hashtags(text: str) -> list[str]:
+    """
+    Normalize a row of hashtags by converting them to snake_case.
+
+    Parameters
+    ----------
+    text : str
+        The input string containing hashtags separated by commas.
+
+    Returns
+    -------
+    list[str]
+        The list of normalized hashtags in snake_case.
+    """
+    if not text:
+        return []
+
+    tags = text.split(",")
+
+    return [to_snake_case(hashtag) for hashtag in tags]
+
+
+def preprocess_corpus(corpus: list[str]) -> list[list[str]]:
+    """
+    Preprocess the corpus by normalizing hashtags
+
+    Parameters
+    ----------
+    corpus : list[str]
+        The input corpus where each entry is a comma-separated list of hashtags.
+
+    Returns
+    -------
+    list[list[str]]
+        The processed corpus where each entry is a list of normalized hashtags.
+    """
+    return [normalize_hashtags(entry) for entry in tqdm(corpus)]

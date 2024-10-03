@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tag-recommender"
-version = "0.1.0"
+version = "0.2.1"
 description = "A simple API to recommend similar hashtags"
 authors = ["George Perakis <perakisgeorgios@gmail.com>"]
 readme = "README.md"
@@ -29,6 +29,7 @@ bertopic = "^0.16.3"
 python-igraph = "^0.11.6"
 click = "^8.1.7"
 pydantic-settings = "^2.5.2"
+mlxtend = "^0.23.1"
 
 [tool.poetry.group.dev.dependencies]
 jupyter = "^1.1.1"
