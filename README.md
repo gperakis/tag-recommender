@@ -55,6 +55,11 @@ Export the environment variables:
 export $(grep -v '^#' .env | xargs -0)
 ```
 
+To split the data into training and testing sets, run the following command:
+```bash
+tag-recommender data split --input_file path/to/input_file --save_dir path/to/output_dir
+```
+
 Run the rest api locally by running the following command:
 ```bash
 tag-recommender services run-rest
