@@ -1,5 +1,3 @@
-from typing import List, Optional
-
 from pydantic import BaseModel, Field
 
 
@@ -11,7 +9,7 @@ class RecommendRequest(BaseModel):
         description="A comma separated list of tags for which we need recommendations.",
         examples=["art,photography", "nature", "creative-writing,digital-art"],
     )
-    num_tags: Optional[int] = Field(
+    num_tags: int | None = Field(
         default=5,
         ge=1,
         le=50,
@@ -59,7 +57,7 @@ class RecommendedItem(BaseModel):
 class RecommendResponse(BaseModel):
     """Response model for recommending tags."""
 
-    tags: Optional[List[RecommendedItem]] = Field(
+    tags: list[RecommendedItem] | None = Field(
         ...,
         description="List of recommended tags based on input.",
         examples=["digital-art", "creative-writing", "nature"],
