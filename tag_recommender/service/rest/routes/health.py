@@ -3,7 +3,6 @@ from fastapi import APIRouter
 from tag_recommender import __version__
 from tag_recommender.service.rest.context import launch_date
 
-
 health_router = APIRouter(prefix="/health")
 
 

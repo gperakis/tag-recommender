@@ -2,9 +2,9 @@ import pytest
 from pydantic import ValidationError
 
 from tag_recommender.service.rest.schemas import (
+    RecommendedItem,
     RecommendRequest,
     RecommendResponse,
-    RecommendedItem,
     Status,
 )
 
