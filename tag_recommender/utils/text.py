@@ -12,7 +12,8 @@ def remove_emojis(text):
 def to_snake_case_boosted(text: str) -> str:
     """
     Convert a string to snake_case, supporting Unicode characters,
-    handling punctuation, emoticons, and other special cases related to hashtags.
+    handling punctuation, emoticons, hyphens, and other special cases related
+    to hashtags.
 
     Parameters
     ----------
@@ -34,7 +35,7 @@ def to_snake_case_boosted(text: str) -> str:
     text = remove_emojis(text)
 
     # Remove punctuation marks, keeping underscores if needed
-    text = re.sub(r"[^\w\s]", "", text, flags=re.UNICODE)
+    text = re.sub(r"[^\w\s-]", "", text, flags=re.UNICODE)
 
     # Replace spaces and hyphens with underscores
     text = re.sub(r"[\s\-]+", "_", text, flags=re.UNICODE)
