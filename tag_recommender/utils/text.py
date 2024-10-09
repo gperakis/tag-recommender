@@ -40,6 +40,9 @@ def to_snake_case_boosted(text: str) -> str:
     # Replace spaces and hyphens with underscores
     text = re.sub(r"[\s\-]+", "_", text, flags=re.UNICODE)
 
+    # remove double quotes
+    text = re.sub(r"\"", "", text)
+
     # Handle CamelCase or PascalCase
     text = re.sub(r"(?<=[a-z0-9])(?=[A-Z])", "_", text)
     text = re.sub(r"(?<=[A-Z])(?=[A-Z][a-z0-9])", "_", text)
