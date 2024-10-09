@@ -2,8 +2,8 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from tag_recommender.train.base import BaseMLModel
-from tag_recommender.utils.evaluate import prepare_eval_data
+from tag_recommender.recommender.base import BaseMLModel
+from tag_recommender.utils.evaluate import Evaluator
 from tag_recommender.utils.text import normalize_hashtags
 
 
@@ -15,9 +15,14 @@ def mock_model():
     return model
 
 
-def test_prepare_eval_data_with_string_input(mock_model):
+@pytest.fixture()
+def evaluator():
+    return Evaluator(split_tags_func=normalize_hashtags)
+
+
+def test_prepare_eval_data_with_string_input(mock_model, evaluator):
     corpus = ["tag1, tag2, tag3"]
-    result = prepare_eval_data(corpus, mock_model, split_tags_func=normalize_hashtags)
+    result = evaluator.prepare_eval_data(corpus, mock_model)
 
     expected_ground_truth = {
         "row_0": {
@@ -35,9 +40,9 @@ def test_prepare_eval_data_with_string_input(mock_model):
     assert result["ground_truth_without_oov"] == expected_ground_truth_without_oov
 
 
-def test_prepare_eval_data_with_list_input(mock_model):
+def test_prepare_eval_data_with_list_input(mock_model, evaluator):
     corpus = [["tag1", "tag2", "tag3"]]
-    result = prepare_eval_data(corpus, mock_model)
+    result = evaluator.prepare_eval_data(corpus, mock_model)
 
     expected_ground_truth = {
         "row_0": {
@@ -55,9 +60,9 @@ def test_prepare_eval_data_with_list_input(mock_model):
     assert result["ground_truth_without_oov"] == expected_ground_truth_without_oov
 
 
-def test_prepare_eval_data_with_oov_tags(mock_model):
+def test_prepare_eval_data_with_oov_tags(mock_model, evaluator):
     corpus = [["tag1", "tag2", "tag4"]]  # 'tag4' is OOV
-    result = prepare_eval_data(corpus, mock_model)
+    result = evaluator.prepare_eval_data(corpus, mock_model)
 
     expected_ground_truth = {
         "row_0": {
