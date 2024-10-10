@@ -73,6 +73,19 @@ def preprocess_data(df: pd.DataFrame, split_tags_func: callable) -> pd.DataFrame
 
     logger.info(f"Filtered out {initial_len - len(df)} rows with zero tag counts.")
 
+    # calculate the total hashtags count within each array
+    hashtags_counts = (
+        pd.concat([df["root_tags"], df["tags"]]).explode().dropna().value_counts()
+    )
+    df["root_tags_popularity"] = df["root_tags"].progress_apply(
+        lambda x: sum([hashtags_counts.get(tag, 0) for tag in x])
+    )
+    df["tags_popularity"] = df["tags"].progress_apply(
+        lambda x: sum([hashtags_counts.get(tag, 0) for tag in x])
+    )
+
+    df["total_popularity"] = df["root_tags_popularity"] + df["tags_popularity"]
+
     logger.info("Data preprocessing completed.")
 
     return df
