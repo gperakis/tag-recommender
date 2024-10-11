@@ -103,8 +103,7 @@ class DataSplitter:
         df: pd.DataFrame,
         bins: list[int] | None = None,
         labels: list[str] | None = None,
-        save_dir: Path | None = None,
-    ):
+    ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
         """
         Performs data bucketing and splitting.
 
@@ -115,8 +114,6 @@ class DataSplitter:
             Bin edges for bucketing.
         labels : list[str] | None (default: None)
             Labels for bins. If None, labels are generated.
-        save_dir : Path | None (default: None)
-            Directory to save split datasets.
 
         Returns
         -------
@@ -143,16 +140,7 @@ class DataSplitter:
         df_train, df_val, df_test = self.stratified_split(
             df, stratify_cols=self.stratify_cols
         )
-
-        # Save datasets if save_dir is provided
-        if save_dir:
-            if isinstance(save_dir, str):
-                save_dir = Path(save_dir)
-            save_dir.mkdir(parents=True, exist_ok=True)
-            df_train.to_csv(save_dir / "train.csv", index=False)
-            df_val.to_csv(save_dir / "val.csv", index=False)
-            df_test.to_csv(save_dir / "test.csv", index=False)
-            logger.info(f"Datasets saved to {save_dir}")
+        logger.info("Data split completed.")
 
         return df_train, df_val, df_test
 
@@ -191,5 +179,29 @@ class DataSplitter:
 
         df = preprocess_data(df, split_tags_func=split_tags_func)
 
-        df_train, df_val, df_test = self.run_split(df, save_dir=save_dir)
+        df_train, df_val, df_test = self.run_split(df)
+
+        # Save datasets if save_dir is provided
+        if save_dir:
+            save_dir = Path(save_dir)
+            save_dir.mkdir(parents=True, exist_ok=True)
+            df_train.to_parquet(
+                save_dir / "train.parquet",
+                engine="pyarrow",
+                compression="snappy",
+                index=False,
+            )
+            df_val.to_parquet(
+                save_dir / "val.parquet",
+                engine="pyarrow",
+                compression="snappy",
+                index=False,
+            )
+            df_test.to_parquet(
+                save_dir / "test.parquet",
+                engine="pyarrow",
+                compression="snappy",
+                index=False,
+            )
+
         return df_train, df_val, df_test
