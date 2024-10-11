@@ -65,3 +65,13 @@ Run the rest api locally by running the following command:
 tag-recommender services run-rest
 ```
 Documentation for the REST api can be found at `http://localhost:8000/docs`
+
+Dockers can be built and run using the following commands:
+From the top-level directory of the repository
+```bash
+docker build -t tag-recommender:latest -f docker/Dockerfile .
+```
+Run the Docker Container
+```bash
+docker run -p 8000:8000 tag-recommender:latest
+```
