@@ -10,7 +10,6 @@ logger = logging.getLogger(__name__)
 @click.group()
 def services():
     # placeholder for the group command
-    # if needed, we may load some models here
     pass
 
 
@@ -21,8 +20,6 @@ def services():
 )
 def run_rest(host, port):
     import uvicorn
-
-    # TODO add prometheus instrumentation here
 
     app = create_fastapi_application()
 
