@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tag-recommender"
-version = "0.2.3"
+version = "0.3.0"
 description = "A simple API to recommend similar hashtags"
 authors = ["George Perakis <perakisgeorgios@gmail.com>"]
 readme = "README.md"

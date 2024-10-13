@@ -3,39 +3,39 @@
 
 
 ## 📝 Overview
-This repository contains the code for a tag recommender system that recommends tags
-for Tumblr posts based on previous hashtags used in the post.
-The system uses a combination of text processing techniques, statistical methods and
-machine learning models to predict the most relevant tags for a given post.
+This repository contains the code for a tag recommender system
+that recommends tags for Tumblr posts based on previous hashtags used in the post.
+The system uses a combination of text processing techniques, statistical methods,
+and machine learning models to predict the most relevant tags for a given post.
 
 ## 📚 Getting Started
-
 This guide provides instructions for setting up your Python environment,
-including installing Python 3.11, Poetry,
-and managing dependencies with a virtual environment.
-
+installing dependencies, downloading data, and running the application.
 
 ## 📑 Table of Contents
 1. [🔧 Install Python 3.11](#-install-python-311)
 2. [📦 Install Poetry](#-install-poetry)
 3. [📥 Install Existing Dependencies](#-install-existing-dependencies)
-4. [🔗 Download Data](#-download-data)
-5. [📘 Open Jupyter Notebook](#-open-jupyter-notebook)
-6. [📂 Project Directory Structure](#-project-directory-structure)
+4. [📂 Data](#-data)
+5. [💻 Running the Application](#-running-the-application)
+6. [📘 Open Jupyter Notebook](#-open-jupyter-notebook)
+7. [🐳 Docker Setup](#-docker-setup)
+8. [📂 Project Directory Structure](#-project-directory-structure)
 
 ## 🔧 Install Python 3.11
-
-To install Python 3.11, visit the [official Python download page](https://www.python.org/downloads/release/python-3110/) and follow the instructions for your operating system.
+To install Python 3.11,
+visit the [official Python download page](https://www.python.org/downloads/release/python-3110/)
+and follow the instructions for your operating system.
 
 ## 📦 Install Poetry
 Poetry is a tool for dependency management and packaging in Python.
-(alternative to venv and to pipenv)
-To install Poetry, visit the [official Poetry installation page](https://python-poetry.org/docs/#installation).
+It provides a streamlined approach to managing environments and dependencies.
+To install Poetry,
+visit the [official Poetry installation page](https://python-poetry.org/docs/#installation).
 
 ## 📥 Install Repo Existing Dependencies
-To install the projects dependencies using the `pyproject.toml` and `poetry.lock` file,
+To install the project's dependencies using the `pyproject.toml` and `poetry.lock` file,
 run the following command:
-
 ```bash
 poetry install  # Creates a virtual environment and installs dependencies
 ```
@@ -45,7 +45,7 @@ To activate the virtual environment, run:
 poetry shell
 ```
 
-Duplicate the `.env.sample` file and name it as `.env` using the following command.
+Duplicate the `.env.sample` file and name it `.env`:
 ```bash
 cp .env.sample .env
 ```
@@ -55,19 +55,38 @@ Export the environment variables:
 export $(grep -v '^#' .env | xargs -0)
 ```
 
-To split the data into training and testing sets, run the following command:
+## 📂 Data
+The dataset is located in the `data/` folder.
+It should include a CSV file.
+
+To split the data into training and testing sets, use the following command:
 ```bash
 tag-recommender data split --input_file path/to/input_file --save_dir path/to/output_dir
 ```
 
-Run the rest api locally by running the following command:
+## 💻 Running the Application
+
+To run the REST API locally, execute the following command:
 ```bash
 tag-recommender services run-rest
 ```
-Documentation for the REST api can be found at `http://localhost:8000/docs`
+API documentation will be available at http://localhost:8000/docs.
 
-Dockers can be built and run using the following commands:
-From the top-level directory of the repository
+## 📘 Open Jupyter Notebook
+To open and explore the notebooks, follow these steps:
+```bash
+jupyter notebook
+```
+Navigate to the notebooks/ directory where you will find the following notebooks:
+- `1_tags_eda.ipynb`: Initial exploratory data analysis on tags.
+- `2_split_dataset.ipynb`: Script for splitting the dataset.
+- `3_hashtags_normalization.ipynb`: Steps for normalizing hashtags.
+- `4_frequent_patterns.ipynb`: Notebook focusing on frequent pattern mining.
+
+## 🐳 Docker Setup
+You can also use Docker to containerize the application.
+
+Build the Docker Image (from the root directory):
 ```bash
 docker build -t tag-recommender:latest -f docker/Dockerfile .
 ```
