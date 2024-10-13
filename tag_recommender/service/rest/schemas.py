@@ -46,16 +46,16 @@ class RecommendedItem(BaseModel):
         ge=0.0,
         le=1.0,
     )
-    # input_tags: List[str] = Field(
-    #     ...,
-    #     description="List of input tags used for the recommendation.",
-    #     examples=[["art", "photography"], ["nature"],
-    #     ["creative-writing", "digital-art"]],
-    # )
 
 
 class RecommendResponse(BaseModel):
     """Response model for recommending tags."""
+
+    input_tags: str = Field(
+        ...,
+        description="Input tags for which recommendations are generated.",
+        examples=["art,photography", "nature", "creative-writing,digital-art"],
+    )
 
     tags: list[RecommendedItem] | None = Field(
         ...,

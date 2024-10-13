@@ -5,7 +5,7 @@ import pandas as pd
 import pytrec_eval
 from tqdm import tqdm
 
-from tag_recommender.recommender.base import BaseMLModel
+from tag_recommender.recommend.base import BaseMLModel
 from tag_recommender.utils.text import normalize_hashtags
 
 logger = logging.getLogger(__name__)

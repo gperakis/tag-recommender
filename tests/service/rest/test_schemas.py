@@ -65,6 +65,7 @@ def test_recommended_item_invalid_score():
 
 def test_recommend_response_valid():
     data = {
+        "input_tags": "art,photography",
         "tags": [
             {"tag": "digital-art", "score": 0.9},
             {"tag": "creative-writing", "score": 0.8},
@@ -74,6 +75,7 @@ def test_recommend_response_valid():
     response = RecommendResponse(**data)
     assert response.status.code == 200
     assert response.status.message == "Recommendation successful."
+    assert response.input_tags == "art,photography"
     assert response.tags[0].tag == "digital-art"
     assert response.tags[0].score == 0.9
     assert response.tags[1].tag == "creative-writing"

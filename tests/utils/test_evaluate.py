@@ -2,7 +2,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from tag_recommender.recommender.base import BaseMLModel
+from tag_recommender.recommend.base import BaseMLModel
 from tag_recommender.utils.evaluate import Evaluator
 from tag_recommender.utils.text import normalize_hashtags
 

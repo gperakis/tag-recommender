@@ -31,8 +31,7 @@ class Tag2VecSettings(BaseSettings):
 
 class CountMinSketchSettings(BaseSettings):
     depth: int = 5
-    width: int = 1000
-    seed: int = 42
+    width: int = 10000
 
 
 class ModelSettings(BaseSettings):
@@ -50,14 +49,19 @@ class ModelSettings(BaseSettings):
         default=Path("artifacts", "models"),
         description="Directory to save split datasets.",
     )
-    random_state: int = Field(
-        default=42, description="Random seed for reproducibility."
-    )
+
+
+class SplittingSettings(BaseSettings):
     train_size: float = Field(default=0.8, description="Training set size.")
     val_size: float = Field(default=0.10, description="Validation set size.")
     test_size: float = Field(default=0.10, description="Test set size.")
+    random_state: int = Field(
+        default=42, description="Random seed for reproducibility."
+    )
 
 
 app_settings = AppSettings()
 tag2vec_settings = Tag2VecSettings()
 model_settings = ModelSettings()
+splitting_settings = SplittingSettings()
+cms_settings = CountMinSketchSettings()
