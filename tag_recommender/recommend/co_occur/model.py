@@ -7,7 +7,7 @@ from typing import Any
 
 from tqdm import tqdm
 
-from tag_recommender.config import ModelSettings
+from tag_recommender.config import ModelConfig
 from tag_recommender.process.split import DataSplitter
 from tag_recommender.recommend.base import BaseMLModel
 from tag_recommender.recommend.co_occur.sketch import CountMinSketch
@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 class CoOccurrenceModel(BaseMLModel):
     def __init__(
         self,
-        settings: ModelSettings,
+        settings: ModelConfig,
         splitter: DataSplitter | None = None,
         evaluator: Any | None = None,
         cms: CountMinSketch | None = None,
@@ -29,7 +29,7 @@ class CoOccurrenceModel(BaseMLModel):
 
         Parameters
         ----------
-        settings : ModelSettings
+        settings : ModelConfig
 
         splitter : DataSplitter (default: None)
             The DataSplitter object to use for splitting the dataset.

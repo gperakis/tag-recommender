@@ -1,4 +1,4 @@
-from tag_recommender.config import splitting_settings
+from tag_recommender.config import splitting_config
 from tag_recommender.process.split import DataSplitter
 
 
@@ -10,4 +10,4 @@ def create_data_splitter() -> DataSplitter:
     -------
     DataSplitter
     """
-    return DataSplitter(**splitting_settings.dict())
+    return DataSplitter(**splitting_config.dict())

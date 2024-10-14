@@ -4,7 +4,7 @@ from pydantic import Field
 from pydantic_settings import BaseSettings
 
 
-class AppSettings(BaseSettings):
+class AppConfig(BaseSettings):
     app_name: str = "Tag Recommender API"
     app_version: str = "1.0.0"
     allowed_origins: list[str] = ["*"]
@@ -17,9 +17,11 @@ class AppSettings(BaseSettings):
 
     class Config:
         env_file = ".env"
+        # Ignore extra environment variables
+        extra = "ignore"
 
 
-class Tag2VecSettings(BaseSettings):
+class Tag2VecConfig(BaseSettings):
     vector_size: int = 100
     window: int = 3
     min_count: int = 5
@@ -29,12 +31,27 @@ class Tag2VecSettings(BaseSettings):
     sorted_vocab: int = 1
 
 
-class CountMinSketchSettings(BaseSettings):
+class CountMinSketchConfig(BaseSettings):
     depth: int = 5
     width: int = 10000
 
 
-class ModelSettings(BaseSettings):
+#
+class SparkConfig(BaseSettings):
+    spark_executor_memory: str = "8g"
+    spark_driver_memory: str = "8g"
+    spark_executor_memory_overhead: str = "2g"
+    spark_sql_shuffle_partitions: int = 500
+    spark_driver_max_result_size: str = "4g"
+
+    class Config:
+        env_prefix = "SPARK_"
+        env_file = ".env"
+        # Ignore extra environment variables
+        extra = "ignore"
+
+
+class ModelConfig(BaseSettings):
     input_file: str = Field(
         default="data/full_dataset.csv", description="Path to the input file."
     )
@@ -60,8 +77,9 @@ class SplittingSettings(BaseSettings):
     )
 
 
-app_settings = AppSettings()
-tag2vec_settings = Tag2VecSettings()
-model_settings = ModelSettings()
-splitting_settings = SplittingSettings()
-cms_settings = CountMinSketchSettings()
+app_config = AppConfig()
+tag2vec_config = Tag2VecConfig()
+model_config = ModelConfig()
+splitting_config = SplittingSettings()
+cms_config = CountMinSketchConfig()
+spark_config = SparkConfig()
