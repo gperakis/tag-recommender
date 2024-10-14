@@ -1,14 +1,14 @@
 from abc import ABC, abstractmethod
 from typing import Any
 
-from tag_recommender.config import ModelSettings
+from tag_recommender.config import ModelConfig
 from tag_recommender.process.split import DataSplitter
 
 
 class BaseMLModel(ABC):
     def __init__(
         self,
-        settings: ModelSettings,
+        settings: ModelConfig,
         splitter: DataSplitter | None = None,
         evaluator: Any | None = None,
     ):
@@ -17,7 +17,7 @@ class BaseMLModel(ABC):
 
         Parameters
         ----------
-        settings : ModelSettings
+        settings : ModelConfig
             The settings to use for the model.
             - input_file: str
                 The path to the input file.

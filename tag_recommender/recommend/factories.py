@@ -1,4 +1,4 @@
-from tag_recommender.config import cms_settings, model_settings
+from tag_recommender.config import cms_config, model_config
 from tag_recommender.infer import MultiModelInference
 from tag_recommender.process.factories import create_data_splitter
 from tag_recommender.recommend.co_occur.model import CoOccurrenceModel
@@ -9,7 +9,7 @@ from tag_recommender.utils.text import normalize_hashtags, split_tags
 
 def create_csm() -> CountMinSketch:
     """Create a CountMinSketch instance."""
-    return CountMinSketch(**cms_settings.dict())
+    return CountMinSketch(**cms_config.dict())
 
 
 def create_co_occur_model() -> CoOccurrenceModel:
@@ -21,10 +21,10 @@ def create_co_occur_model() -> CoOccurrenceModel:
     CoOccurrenceModel
     """
     splitter = create_data_splitter()
-    split_fun = normalize_hashtags if model_settings.normalize else split_tags
+    split_fun = normalize_hashtags if model_config.normalize else split_tags
     evaluator = Evaluator(split_fun)
     cms = create_csm()
-    return CoOccurrenceModel(model_settings, splitter, evaluator, cms)
+    return CoOccurrenceModel(model_config, splitter, evaluator, cms)
 
 
 def train_co_occur_model():
@@ -35,7 +35,7 @@ def train_co_occur_model():
 
 def load_co_occur_inference_model() -> CoOccurrenceModel:
     """Load a Co-occurrence model for inference."""
-    model = CoOccurrenceModel(model_settings)
+    model = CoOccurrenceModel(model_config)
     model.load_model()
     if not model.knn:
         raise ValueError("No model found. Please train or load a model first.")
