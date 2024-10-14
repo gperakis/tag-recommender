@@ -56,13 +56,23 @@ export $(grep -v '^#' .env | xargs -0)
 ```
 
 ## 📂 Data
-The dataset is located in the `data/` folder.
-It should include a CSV file.
+The dataset should be located in the `data/` folder and should be a CSV file.
 
 To split the data into training and testing sets, use the following command:
 ```bash
 tag-recommender data split --input_file path/to/input_file --save_dir path/to/output_dir
 ```
+
+If you wish to train you own co-occurrence model, use the following command.
+This will train the model using the settings found in the `config.py` file
+(csm settings).
+```bash
+tag-recommender models train-co-occurrence
+```
+
+Alternatively you may download the pre-trained model from the following
+[link](https://drive.google.com/file/d/1umk7fhSKmYIsq6qlYEFPStTEW0pC7YOz/view?usp=drive_link)
+The model should be saved in the `artifacts/models` directory.
 
 ## 💻 Running the Application
 
