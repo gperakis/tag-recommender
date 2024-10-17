@@ -164,6 +164,7 @@ cython_debug/
 artifacts/**/*
 # Include the specific model file
 !artifacts/models/co_occur_w10000_d5_model.pkl
-
+# This is not the final model, just for trial
+!artifacts/models/word2vec_vs100_w3_mc5_sg1_ep200.model
 # Exclude all files under data/
 data/**/*
