@@ -8,9 +8,7 @@ tqdm.pandas()
 logger = logging.getLogger(__name__)
 
 
-def bucketize_col(
-    df: pd.DataFrame, column: str, bins: list[int], labels: list[str]
-) -> pd.Series:
+def bucketize_col(df: pd.DataFrame, column: str, bins: list[int]) -> pd.Series:
     """
     Bucketizes a DataFrame column based on specified bins and labels.
 
@@ -22,15 +20,13 @@ def bucketize_col(
         The column to bucketize.
     bins : list[int]
         Bin edges.
-    labels : list[str]
-        Labels for the bins.
 
     Returns
     -------
     pd.Series
-        A Series with bucketized values.
+        A Series with bucketized values as strings.
     """
-    return pd.cut(df[column], bins=bins, labels=labels, include_lowest=True)
+    return pd.cut(df[column], bins=bins, include_lowest=True).apply(str)
 
 
 def preprocess_data(df: pd.DataFrame, split_tags_func: callable) -> pd.DataFrame:
