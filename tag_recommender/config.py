@@ -17,7 +17,6 @@ class AppConfig(BaseSettings):
 
     class Config:
         env_file = ".env"
-        # Ignore extra environment variables
         extra = "ignore"
 
 
@@ -30,13 +29,17 @@ class Tag2VecConfig(BaseSettings):
     epochs: int = 200
     sorted_vocab: int = 1
 
+    class Config:
+        env_prefix = "TAG2VEC_"
+        env_file = ".env"
+        extra = "ignore"
+
 
 class CountMinSketchConfig(BaseSettings):
     depth: int = 5
     width: int = 10000
 
 
-#
 class SparkConfig(BaseSettings):
     spark_executor_memory: str = "8g"
     spark_driver_memory: str = "8g"
@@ -47,7 +50,17 @@ class SparkConfig(BaseSettings):
     class Config:
         env_prefix = "SPARK_"
         env_file = ".env"
-        # Ignore extra environment variables
+        extra = "ignore"
+
+
+class TagRulesConfig(BaseSettings):
+    support: int = 250
+    min_confidence: float = 0.5
+    lift: float = 1.0
+
+    class Config:
+        env_prefix = "TAG_RULES_"
+        env_file = ".env"
         extra = "ignore"
 
 
@@ -83,3 +96,4 @@ model_config = ModelConfig()
 splitting_config = SplittingSettings()
 cms_config = CountMinSketchConfig()
 spark_config = SparkConfig()
+tag_rules_config = TagRulesConfig()
