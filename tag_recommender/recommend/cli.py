@@ -2,7 +2,7 @@ import logging
 
 import click
 
-from tag_recommender.recommend.factories import train_co_occur_model
+from tag_recommender.recommend.co_occur.factories import train_co_occur_model
 
 logger = logging.getLogger(__name__)
 
