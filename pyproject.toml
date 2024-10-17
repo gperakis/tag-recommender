@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tag-recommender"
-version = "0.3.0"
+version = "0.3.1"
 description = "A simple API to recommend similar hashtags"
 authors = ["George Perakis <perakisgeorgios@gmail.com>"]
 readme = "README.md"
@@ -42,6 +42,8 @@ flake8 = "^4.0.1"
 isort = "^5.10.2"
 mock = "5.1.0"
 pytest = "^8.3.3"
+streamlit = "^1.39.0"
+
 
 [tool.poetry.scripts]
 tag-recommender = "tag_recommender.__main__:cli"
