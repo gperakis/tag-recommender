@@ -40,6 +40,12 @@ run the following command:
 poetry install  # Creates a virtual environment and installs dependencies
 ```
 
+To install the dev dependencies, run:
+```bash
+poetry install --dev
+```
+
+
 To activate the virtual environment, run:
 ```bash
 poetry shell
@@ -82,6 +88,15 @@ tag-recommender services run-rest
 ```
 API documentation will be available at http://localhost:8000/docs.
 
+There also exists a `streamlit application` where you can interact with the model.
+To run the app you first need to ensure you have installed the dev dependencies.
+Run the following command to start the application:
+```bash
+streamlit run tag_recommender/app.py
+```
+The app looks like in the following image
+![streamlit app](![img.png](images/streamlit_app.png)
+
 ## 📘 Open Jupyter Notebook
 To open and explore the notebooks, follow these steps:
 ```bash
@@ -92,6 +107,8 @@ Navigate to the notebooks/ directory where you will find the following notebooks
 - `2_split_dataset.ipynb`: Script for splitting the dataset.
 - `3_hashtags_normalization.ipynb`: Steps for normalizing hashtags.
 - `4_frequent_patterns.ipynb`: Notebook focusing on frequent pattern mining.
+- `5_frequent_patterns_pyspark.ipynb`: Frequent pattern mining using PySpark.
+- `notebooks/co_occurence_performance_metrics.ipynb`: Performance metrics for the co-occurrence model.
 
 ## 🐳 Docker Setup
 You can also use Docker to containerize the application.
