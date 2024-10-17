@@ -49,6 +49,10 @@ class BaseMLModel(ABC):
         self.df_val = None
         self.df_test = None
 
+        self.train_corpus = None
+        self.validation_corpus = None
+        self.test_corpus = None
+
     def preprocess(self) -> None:
         """
         This method preprocesses the dataset.
@@ -72,14 +76,23 @@ class BaseMLModel(ABC):
         self.df_val = df_val
         self.df_test = df_test
 
-    @abstractmethod
     def extra_process(self):
-        """
-        Implement specific preprocessing steps for the model.
-        This is an optional method that can be implemented in the child class and is
-        called after the general preprocessing step.
-        """
-        pass
+        if self.df_train is None:
+            raise ValueError(
+                "The dataset has not been preprocessed. "
+                "Please preprocess the dataset first."
+            )
+
+        rt = "root_tags"
+        t = "tags"
+        train_corpus = self.df_train[rt].tolist() + self.df_train[t].tolist()
+        validation_corpus = self.df_val[rt].tolist() + self.df_val[t].tolist()
+        test_corpus = self.df_test[rt].tolist() + self.df_test[rt].tolist()
+
+        # get rid of empty lists
+        self.train_corpus = [arr for arr in train_corpus if arr]
+        self.validation_corpus = [arr for arr in validation_corpus if arr]
+        self.test_corpus = [arr for arr in test_corpus if arr]
 
     @abstractmethod
     def train(self):

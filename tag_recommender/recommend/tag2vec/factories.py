@@ -13,11 +13,11 @@ def create_tag2vec_model() -> Tag2VecModel:
     -------
     Tag2VecModel
     """
-    spitter = create_data_splitter()
+    splitter = create_data_splitter()
     split_fun = normalize_hashtags if model_config.normalize else split_tags
     evaluator = Evaluator(split_fun)
 
-    return Tag2VecModel(model_config, spitter, evaluator)
+    return Tag2VecModel(model_config, splitter, evaluator)
 
 
 def train_tag2vec_model() -> Tag2VecModel:

@@ -123,34 +123,6 @@ class Tag2VecModel(BaseMLModel):
         logger.info("k-nearest neighbors loaded successfully")
         return self.model
 
-    def extra_process(self):
-        """
-        This method processes the dataset further.
-
-        It prepares the corpus for training the Word2Vec model by concatenating the root
-        tags and the re-blogged tags.
-
-        Returns
-        -------
-        None
-        """
-        if self.df_train is None:
-            raise ValueError(
-                "The dataset has not been preprocessed. "
-                "Please preprocess the dataset first."
-            )
-
-        rt = "root_tags"
-        t = "tags"
-        train_corpus = self.df_train[rt].tolist() + self.df_train[t].tolist()
-        validation_corpus = self.df_val[rt].tolist() + self.df_val[t].tolist()
-        test_corpus = self.df_test[rt].tolist() + self.df_test[rt].tolist()
-
-        # get rid of empty lists
-        self.train_corpus = [arr for arr in train_corpus if arr]
-        self.validation_corpus = [arr for arr in validation_corpus if arr]
-        self.test_corpus = [arr for arr in test_corpus if arr]
-
     def precalculate_knn(self, k=30):
         """
         Pre-calculate the k-nearest neighbors for each tag in the vocabulary.
