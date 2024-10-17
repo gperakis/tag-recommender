@@ -6,8 +6,7 @@ from sklearn.model_selection import train_test_split
 from tqdm import tqdm
 
 from tag_recommender.load.base import read_raw_dataset
-from tag_recommender.process.process import bucketize_col, preprocess_data
-from tag_recommender.utils.general import generate_labels
+from tag_recommender.process.utils import bucketize_col, preprocess_data
 from tag_recommender.utils.text import normalize_hashtags, split_tags
 
 tqdm.pandas()
@@ -47,13 +46,11 @@ class DataSplitter:
                 "The sum of train_size, val_size, and test_size should be 1.0."
             )
 
-        self.stratify_cols = [
-            "tags_count_bucket",
-            "root_tags_count_bucket",
-            "type_bucket",
-        ]
+    @property
+    def stratify_cols(self):
+        return ["root_tags_count_bucket", "type_bucket", "lang_type", "is_reblog"]
 
-    def stratified_split(self, df: pd.DataFrame, stratify_cols: list[str]):
+    def stratified_split(self, df: pd.DataFrame):
         """
         Splits the DataFrame into train, validation, and test sets using stratification.
 
@@ -61,8 +58,6 @@ class DataSplitter:
         ----------
         df : pd.DataFrame
             The input DataFrame.
-        stratify_cols : list[str]
-            Columns to use for stratification.
 
         Returns
         -------
@@ -70,7 +65,7 @@ class DataSplitter:
             (df_train, df_val, df_test)
         """
         logger.info("Starting stratified split...")
-        logger.info(f"Stratify columns: {stratify_cols}")
+        logger.info(f"Stratify columns: {self.stratify_cols}")
         logger.info(f"Train size: {self.train_size}")
         logger.info(f"Validation size: {self.val_size}")
         logger.info(f"Test size: {self.test_size}")
@@ -78,7 +73,7 @@ class DataSplitter:
 
         df_train, df_temp = train_test_split(
             df,
-            stratify=df[stratify_cols],
+            stratify=df[self.stratify_cols],
             train_size=self.train_size,
             random_state=self.random_state,
         )
@@ -87,7 +82,7 @@ class DataSplitter:
 
         df_val, df_test = train_test_split(
             df_temp,
-            stratify=df_temp[stratify_cols],
+            stratify=df_temp[self.stratify_cols],
             test_size=val_test_ratio,
             random_state=self.random_state,
         )
@@ -101,8 +96,6 @@ class DataSplitter:
     def run_split(
         self,
         df: pd.DataFrame,
-        bins: list[int] | None = None,
-        labels: list[str] | None = None,
     ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
         """
         Performs data bucketing and splitting.
@@ -110,10 +103,6 @@ class DataSplitter:
         Parameters
         ----------
         df : pd.DataFrame
-        bins : list[int] | None (default: None)
-            Bin edges for bucketing.
-        labels : list[str] | None (default: None)
-            Labels for bins. If None, labels are generated.
 
         Returns
         -------
@@ -122,24 +111,19 @@ class DataSplitter:
         """
         logger.info("Starting data bucketing...")
 
-        if bins is None:
-            max_tags_count = max(df["root_tags_count"].max(), df["tags_count"].max())
-            bins = [0, 1, 2, 3, 4, 5, 10, 15, 20, 25, max_tags_count + 1]
+        max_tags_count = max(df["root_tags_count"].max(), df["tags_count"].max())
+        root_tag_bins = [0, 3, 10, 20, max_tags_count]
+        tag_bins = [0, 2, 5, 10, max_tags_count]
 
-        if labels is None:
-            labels = generate_labels(bins)
-
-        df["tags_count_bucket"] = bucketize_col(df, "tags_count", bins, labels)
         df["root_tags_count_bucket"] = bucketize_col(
-            df, "root_tags_count", bins, labels
+            df, "root_tags_count", root_tag_bins
         )
+        df["tags_count_bucket"] = bucketize_col(df, "tags_count", tag_bins)
 
         logger.info("Data bucketing completed.")
 
         # Perform the split
-        df_train, df_val, df_test = self.stratified_split(
-            df, stratify_cols=self.stratify_cols
-        )
+        df_train, df_val, df_test = self.stratified_split(df)
         logger.info("Data split completed.")
 
         return df_train, df_val, df_test
