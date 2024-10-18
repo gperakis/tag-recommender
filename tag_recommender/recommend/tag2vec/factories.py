@@ -32,7 +32,7 @@ def evaluate_trained_tag2vec_model() -> Tag2VecModel:
     tag2vec = create_tag2vec_model()
     tag2vec.load_model()
     tag2vec.preprocess()
-    tag2vec.extra_process()
+    tag2vec.create_corpus()
     tag2vec.evaluate()
     return tag2vec
 

@@ -39,19 +39,11 @@ class BaseMLModel(ABC):
         self.input_file = settings.input_file
         self.normalize = settings.normalize
         self.save_dir = settings.save_dir
-        self.datasets_dir = settings.datasets_dir
 
         self.data_splitter = splitter
         self.evaluator = evaluator
 
         self.model = None
-        self.df_train = None
-        self.df_val = None
-        self.df_test = None
-
-        self.train_corpus = None
-        self.validation_corpus = None
-        self.test_corpus = None
 
     def preprocess(self) -> None:
         """
@@ -64,35 +56,34 @@ class BaseMLModel(ABC):
         -------
         None
         """
-        if not self.data_splitter:
+        if self.data_splitter is None:
             raise ValueError("DataSplitter object is not provided.")
 
-        df_train, df_val, df_test = self.data_splitter.process(
+        self.data_splitter.preprocess(
             input_file=self.input_file,
             normalize=self.normalize,
             save_dir=self.save_dir,
         )
-        self.df_train = df_train
-        self.df_val = df_val
-        self.df_test = df_test
 
-    def extra_process(self):
-        if self.df_train is None:
+    def create_corpus(self):
+        if self.data_splitter.df_train is None:
             raise ValueError(
                 "The dataset has not been preprocessed. "
                 "Please preprocess the dataset first."
             )
+        self.data_splitter.create_corpus()
 
-        rt = "root_tags"
-        t = "tags"
-        train_corpus = self.df_train[rt].tolist() + self.df_train[t].tolist()
-        validation_corpus = self.df_val[rt].tolist() + self.df_val[t].tolist()
-        test_corpus = self.df_test[rt].tolist() + self.df_test[rt].tolist()
+    @property
+    def train_corpus(self):
+        return self.data_splitter.train_corpus
 
-        # get rid of empty lists
-        self.train_corpus = [arr for arr in train_corpus if arr]
-        self.validation_corpus = [arr for arr in validation_corpus if arr]
-        self.test_corpus = [arr for arr in test_corpus if arr]
+    @property
+    def validation_corpus(self):
+        return self.data_splitter.validation_corpus
+
+    @property
+    def test_corpus(self):
+        return self.data_splitter.test_corpus
 
     @abstractmethod
     def train(self):

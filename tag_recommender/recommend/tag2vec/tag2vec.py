@@ -41,9 +41,6 @@ class Tag2VecModel(BaseMLModel):
         """
         super().__init__(settings, splitter, evaluator)
         self.knn = {}
-        self.train_corpus = None
-        self.validation_corpus = None
-        self.test_corpus = None
 
     def base_path(self, extension: str = "model") -> Path:
         """
@@ -123,7 +120,7 @@ class Tag2VecModel(BaseMLModel):
         logger.info("k-nearest neighbors loaded successfully")
         return self.model
 
-    def precalculate_knn(self, k=30):
+    def precalculate_knn(self, k=60):
         """
         Pre-calculate the k-nearest neighbors for each tag in the vocabulary.
 
@@ -165,7 +162,7 @@ class Tag2VecModel(BaseMLModel):
             The trained Word2Vec model.
         """
         self.preprocess()
-        self.extra_process()
+        self.create_corpus()
         logger.info("Training Word2Vec model...")
         self.model = Word2Vec(self.train_corpus, **tag2vec_config.model_dump())
         self.precalculate_knn()

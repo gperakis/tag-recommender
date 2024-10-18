@@ -49,10 +49,6 @@ class CoOccurrenceModel(BaseMLModel):
         self.model = None
         self.knn = {}
 
-        self.train_corpus = None
-        self.validation_corpus = None
-        self.test_corpus = None
-
     @property
     def base_path(self) -> Path:
         return Path(
@@ -64,7 +60,7 @@ class CoOccurrenceModel(BaseMLModel):
         Populate the Count-Min Sketch and hashtag pairs with co-occurring hashtags.
         """
         self.preprocess()
-        self.extra_process()
+        self.create_corpus()
 
         for hashtags in tqdm(
             self.train_corpus, desc="Populating CMS and hashtag pairs"
@@ -212,7 +208,7 @@ class CoOccurrenceModel(BaseMLModel):
         )
         return eval_data
 
-    def precalculate_knn(self, k=30):
+    def precalculate_knn(self, k=60):
         """
         Pre-calculate the k-nearest neighbors for all hashtags in the vocabulary.
         This is useful for faster inference.

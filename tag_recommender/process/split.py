@@ -46,6 +46,14 @@ class DataSplitter:
                 "The sum of train_size, val_size, and test_size should be 1.0."
             )
 
+        self.df_test: pd.DataFrame | None = None
+        self.df_val: pd.DataFrame | None = None
+        self.df_train: pd.DataFrame | None = None
+
+        self.train_corpus: list[list[str]] | None = None
+        self.validation_corpus: list[list[str]] | None = None
+        self.test_corpus: list[list[str]] | None = None
+
     @property
     def stratify_cols(self):
         return ["root_tags_count_bucket", "type_bucket", "lang_type", "is_reblog"]
@@ -128,7 +136,7 @@ class DataSplitter:
 
         return df_train, df_val, df_test
 
-    def process(
+    def preprocess(
         self,
         input_file: str,
         normalize: bool = True,
@@ -163,29 +171,54 @@ class DataSplitter:
 
         df = preprocess_data(df, split_tags_func=split_tags_func)
 
-        df_train, df_val, df_test = self.run_split(df)
+        self.df_train, self.df_val, self.df_test = self.run_split(df)
 
         # Save datasets if save_dir is provided
         if save_dir:
             save_dir = Path(save_dir)
             save_dir.mkdir(parents=True, exist_ok=True)
-            df_train.to_parquet(
+            self.df_train.to_parquet(
                 save_dir / "train.parquet",
                 engine="pyarrow",
                 compression="snappy",
                 index=False,
             )
-            df_val.to_parquet(
+            self.df_val.to_parquet(
                 save_dir / "val.parquet",
                 engine="pyarrow",
                 compression="snappy",
                 index=False,
             )
-            df_test.to_parquet(
+            self.df_test.to_parquet(
                 save_dir / "test.parquet",
                 engine="pyarrow",
                 compression="snappy",
                 index=False,
             )
 
-        return df_train, df_val, df_test
+        return self.df_train, self.df_val, self.df_test
+
+    def create_corpus(self):
+        """
+        Create the corpus for the train, validation, and test sets.
+
+        Returns
+        -------
+        None
+        """
+        if self.df_train is None:
+            raise ValueError(
+                "The dataset has not been preprocessed. "
+                "Please preprocess the dataset first."
+            )
+
+        rt = "root_tags"
+        t = "tags"
+        train_corpus = self.df_train[rt].tolist() + self.df_train[t].tolist()
+        validation_corpus = self.df_val[rt].tolist() + self.df_val[t].tolist()
+        test_corpus = self.df_test[rt].tolist() + self.df_test[rt].tolist()
+
+        # get rid of empty lists
+        self.train_corpus = [arr for arr in train_corpus if arr]
+        self.validation_corpus = [arr for arr in validation_corpus if arr]
+        self.test_corpus = [arr for arr in test_corpus if arr]
