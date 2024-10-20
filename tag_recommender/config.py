@@ -44,7 +44,7 @@ class SparkConfig(BaseSettings):
     spark_executor_memory: str = "8g"
     spark_driver_memory: str = "8g"
     spark_executor_memory_overhead: str = "2g"
-    spark_sql_shuffle_partitions: int = 500
+    spark_sql_shuffle_partitions: int = 2000
     spark_driver_max_result_size: str = "4g"
 
     class Config:
@@ -55,7 +55,7 @@ class SparkConfig(BaseSettings):
 
 class TagRulesConfig(BaseSettings):
     support: int = 250
-    min_confidence: float = 0.5
+    min_confidence: float = 0.05
     lift: float = 1.0
 
     class Config:
