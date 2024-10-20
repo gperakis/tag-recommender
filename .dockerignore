@@ -162,9 +162,11 @@ cython_debug/
 
 # Exclude all files under artifacts/
 artifacts/**/*
-# Include the specific model file
+# Include the Co-occurrence model file
 !artifacts/models/co_occur_w10000_d5_model.pkl
-# This is not the final model, just for trial
-!artifacts/models/word2vec_vs100_w3_mc5_sg1_ep200.model
+# Include the Tag2Vec model
+!artifacts/models/word2vec_vs100_w3_mc5_sg1_ep200.pkl.gz
+# Include the TagRules model
+!artifacts/models/association_rules_s215_c0.07_l1.0.pkl.gz
 # Exclude all files under data/
 data/**/*

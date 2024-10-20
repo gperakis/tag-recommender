@@ -65,4 +65,4 @@ def split(
         test_size=test_size,
         random_state=random_state,
     )
-    splitter.process(input_file=input_file, save_dir=save_dir, normalize=normalize)
+    splitter.preprocess(input_file=input_file, save_dir=save_dir, normalize=normalize)

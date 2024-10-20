@@ -49,54 +49,18 @@ class CoOccurrenceModel(BaseMLModel):
         self.model = None
         self.knn = {}
 
-        self.train_corpus = None
-        self.validation_corpus = None
-        self.test_corpus = None
-
     @property
     def base_path(self) -> Path:
         return Path(
             self.save_dir, f"co_occur_w{self.cms.width}_d{self.cms.depth}_model.pkl"
         )
 
-    def extra_process(self):
-        """
-        Extra processing for the Co-occurrence model.
-
-        Returns
-        -------
-        None
-        """
-        if self.df_train is None:
-            raise ValueError(
-                "The dataset has not been preprocessed. "
-                "Please preprocess the dataset first."
-            )
-
-        if self.df_train is None:
-            raise ValueError(
-                "The dataset has not been preprocessed. "
-                "Please preprocess the dataset first."
-            )
-
-        rt = "root_tags"
-        t = "tags"
-
-        train_corpus = self.df_train[rt].tolist() + self.df_train[t].tolist()
-        validation_corpus = self.df_val[rt].tolist() + self.df_val[t].tolist()
-        test_corpus = self.df_test[rt].tolist() + self.df_test[rt].tolist()
-
-        # get rid of empty lists
-        self.train_corpus = [arr for arr in train_corpus if arr]
-        self.validation_corpus = [arr for arr in validation_corpus if arr]
-        self.test_corpus = [arr for arr in test_corpus if arr]
-
     def train(self):
         """
         Populate the Count-Min Sketch and hashtag pairs with co-occurring hashtags.
         """
         self.preprocess()
-        self.extra_process()
+        self.create_corpus()
 
         for hashtags in tqdm(
             self.train_corpus, desc="Populating CMS and hashtag pairs"
@@ -244,7 +208,7 @@ class CoOccurrenceModel(BaseMLModel):
         )
         return eval_data
 
-    def precalculate_knn(self, k=30):
+    def precalculate_knn(self, k=60):
         """
         Pre-calculate the k-nearest neighbors for all hashtags in the vocabulary.
         This is useful for faster inference.

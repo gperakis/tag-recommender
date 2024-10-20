@@ -47,7 +47,11 @@ def preprocess_data(df: pd.DataFrame, split_tags_func: callable) -> pd.DataFrame
     logger.info("Starting data preprocessing...")
 
     df["root_tags"] = df["root_tags"].fillna("").progress_apply(split_tags_func)
+    df["root_tags"] = df["root_tags"].apply(
+        lambda arr: [i.strip() for i in arr if i.strip()]
+    )
     df["tags"] = df["tags"].fillna("").progress_apply(split_tags_func)
+    df["tags"] = df["tags"].apply(lambda arr: [i.strip() for i in arr if i.strip()])
 
     df["root_tags_count"] = df["root_tags"].progress_apply(len)
     df["tags_count"] = df["tags"].progress_apply(len)

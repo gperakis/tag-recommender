@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tag-recommender"
-version = "0.3.1"
+version = "0.4.1"
 description = "A simple API to recommend similar hashtags"
 authors = ["George Perakis <perakisgeorgios@gmail.com>"]
 readme = "README.md"
@@ -19,21 +19,17 @@ fastapi = "^0.115.0"
 pandas = "^2.2.2"
 uvicorn = "^0.30.6"
 scikit-learn = "^1.5.2"
-pytrec-eval = "^0.5"
 gensim = "^4.3.3"
 tqdm = "^4.66.5"
 datasketch = "^1.6.5"
 mmh3 = "^5.0.1"
-matplotlib = "^3.9.2"
-bertopic = "^0.16.3"
-python-igraph = "^0.11.6"
 click = "^8.1.7"
 pydantic-settings = "^2.5.2"
-mlxtend = "^0.23.1"
 emoji = "^2.14.0"
 pyspark = "^3.5.3"
 datasets = "^3.0.1"
 accelerate = "^1.0.0"
+pytrec-eval = "^0.5"
 
 [tool.poetry.group.dev.dependencies]
 jupyter = "^1.1.1"
@@ -43,7 +39,10 @@ isort = "^5.10.2"
 mock = "5.1.0"
 pytest = "^8.3.3"
 streamlit = "^1.39.0"
-
+bertopic = "^0.16.3"
+python-igraph = "^0.11.6"
+matplotlib = "^3.9.2"
+mlxtend = "^0.23.1"
 
 [tool.poetry.scripts]
 tag-recommender = "tag_recommender.__main__:cli"
