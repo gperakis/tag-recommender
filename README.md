@@ -76,6 +76,17 @@ This will train the model using the settings found in the `config.py` file
 tag-recommender models train-co-occurrence
 ```
 
+To train the Tag2Vec model use the following command:
+```bash
+tag-recommender models train-tag2vec
+```
+
+To train the Association Rule model use the following command:
+```bash
+tag-recommender models train-tag-rules
+```
+
+
 Alternatively you may download the pre-trained model from the following
 [link](https://drive.google.com/file/d/1umk7fhSKmYIsq6qlYEFPStTEW0pC7YOz/view?usp=drive_link)
 The model should be saved in the `artifacts/models` directory.
