@@ -106,14 +106,6 @@ class Tag2VecModel(BaseMLModel):
         Word2Vec
             The trained Word2Vec model
         """
-        if self.model:
-            logger.info("Model already loaded. Returning the loaded model.")
-            return self.model
-
-        logger.info(f"Loading model from path: {self.model_path}")
-        self.model = Word2Vec.load(str(self.model_path))
-        logger.info("Model loaded successfully")
-
         logger.info("Loading k-nearest neighbors...")
         with gzip.open(self.knn_path, "rb") as f:
             self.knn = pickle.load(f)
@@ -231,9 +223,6 @@ class Tag2VecModel(BaseMLModel):
         -------
 
         """
-        if not self.model:
-            raise ValueError("No model found. Please train or load a model")
-
         if not corpus and not self.validation_corpus:
             raise ValueError("No corpus provided for evaluation")
 
