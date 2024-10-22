@@ -17,7 +17,7 @@ installing dependencies, downloading data, and running the application.
 2. [📦 Install Poetry](#-install-poetry)
 3. [📥 Install Existing Dependencies](#-install-existing-dependencies)
 4. [📂 Data](#-data)
-5. [💻 Running the Application](#-running-the-application)
+5. [💻 Running the Application](#-running-the-application)˚
 6. [📘 Open Jupyter Notebook](#-open-jupyter-notebook)
 7. [🐳 Docker Setup](#-docker-setup)
 8. [📂 Project Directory Structure](#-project-directory-structure)
@@ -69,6 +69,11 @@ To split the data into training and testing sets, use the following command:
 tag-recommender data split --input_file path/to/input_file --save_dir path/to/output_dir
 ```
 
+If you wish to see all the provided training methodologies simply run
+```bash
+tag-recommender models
+```
+
 If you wish to train you own co-occurrence model, use the following command.
 This will train the model using the settings found in the `config.py` file
 (csm settings).
@@ -86,10 +91,17 @@ To train the Association Rule model use the following command:
 tag-recommender models train-tag-rules
 ```
 
+To train a Triplet Loss model use the following command to see 
+the available options
+```bash
+tag-recommender models train-triplet-tag-model --help
+```
 
-Alternatively you may download the pre-trained model from the following
-[link](https://drive.google.com/file/d/1umk7fhSKmYIsq6qlYEFPStTEW0pC7YOz/view?usp=drive_link)
-The model should be saved in the `artifacts/models` directory.
+
+Alternatively you may download the pre-trained models from from the following
+[Google Drive](https://drive.google.com/drive/folders/1XMv8aQweLvoNxaaA-o9ChH1D19zlB31f?usp=sharing):
+
+The models should be saved in the `artifacts/models` directory.
 
 ## 💻 Running the Application
 
@@ -99,7 +111,7 @@ tag-recommender services run-rest
 ```
 API documentation will be available at http://localhost:8000/docs.
 
-To run a stress test on the API, execute the following command:
+To run a `stress test` on the API, execute the following command:
 ```bash
 tag-recommender services run-rest-stress-test --help
 ```
@@ -124,7 +136,7 @@ Navigate to the notebooks/ directory where you will find the following notebooks
 - `3_hashtags_normalization.ipynb`: Steps for normalizing hashtags.
 - `4_frequent_patterns.ipynb`: Notebook focusing on frequent pattern mining.
 - `5_frequent_patterns_pyspark.ipynb`: Frequent pattern mining using PySpark.
-- `notebooks/co_occurence_performance_metrics.ipynb`: Performance metrics for the co-occurrence model.
+- `notebooks/rest_service_performance_metrics.ipynb`: Performance metrics for the co-occurrence model.
 
 ## 🐳 Docker Setup
 You can also use Docker to containerize the application.
