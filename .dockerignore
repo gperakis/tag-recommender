@@ -167,6 +167,6 @@ artifacts/**/*
 # Include the Tag2Vec model
 !artifacts/models/word2vec_vs100_w3_mc5_sg1_ep200.pkl.gz
 # Include the TagRules model
-!artifacts/models/association_rules_s215_c0.07_l1.0.pkl.gz
+!artifacts/models/association_rules_s250_c0.05_l1.0.pkl.gz
 # Exclude all files under data/
 data/**/*

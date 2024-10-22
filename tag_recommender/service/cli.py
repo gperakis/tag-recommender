@@ -3,6 +3,7 @@ import logging
 import click
 
 from tag_recommender.service.rest.factories import create_fastapi_application
+from tag_recommender.service.utils import run_stress_test
 
 logger = logging.getLogger(__name__)
 
@@ -24,3 +25,24 @@ def run_rest(host, port):
     app = create_fastapi_application()
 
     uvicorn.run(app, host=host, port=port)
+
+
+@services.command()
+@click.option(
+    "--path",
+    required=True,
+    help="Path to the parquet file with test tags. "
+         "Default is data/processed/test.parquet",
+    default="data/processed/test.parquet",
+)
+@click.option("--workers", default=4, help="Number of workers. Default is 4.")
+@click.option(
+    "--requests",
+    default=5000,
+    help="Total number of requests to send. Default is 5000.",
+)
+@click.option(
+    "--rate", default=200, help="Rate of requests per second (Hz). Default is 200."
+)
+def run_rest_stress_test(path, workers, requests, rate):
+    run_stress_test(path, workers, requests, rate)

@@ -99,6 +99,11 @@ tag-recommender services run-rest
 ```
 API documentation will be available at http://localhost:8000/docs.
 
+To run a stress test on the API, execute the following command:
+```bash
+tag-recommender services run-rest-stress-test --help
+```
+
 There also exists a `streamlit application` where you can interact with the model.
 To run the app you first need to ensure you have installed the dev dependencies.
 Run the following command to start the application:
