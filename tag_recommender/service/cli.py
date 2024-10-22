@@ -32,7 +32,7 @@ def run_rest(host, port):
     "--path",
     required=True,
     help="Path to the parquet file with test tags. "
-         "Default is data/processed/test.parquet",
+    "Default is data/processed/test.parquet",
     default="data/processed/test.parquet",
 )
 @click.option("--workers", default=4, help="Number of workers. Default is 4.")
