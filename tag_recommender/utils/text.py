@@ -125,7 +125,9 @@ def normalize_hashtags(text: str) -> list[str]:
 
     tags = text.split(",")
 
-    return [to_snake_case_boosted(hashtag) for hashtag in tags]
+    return [
+        normalized for hashtag in tags if (normalized := to_snake_case_boosted(hashtag))
+    ]
 
 
 def preprocess_corpus(corpus: list[str]) -> list[list[str]]:
