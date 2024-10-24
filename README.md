@@ -91,7 +91,7 @@ To train the Association Rule model use the following command:
 tag-recommender models train-tag-rules
 ```
 
-To train a Triplet Loss model use the following command to see 
+To train a Triplet Loss model use the following command to see
 the available options
 ```bash
 tag-recommender models train-triplet-tag-model --help
@@ -134,7 +134,7 @@ Navigate to the notebooks/ directory where you will find the following notebooks
 - `1_tags_eda.ipynb`: Initial exploratory data analysis on tags.
 - `2_split_dataset.ipynb`: Script for splitting the dataset.
 - `3_hashtags_normalization.ipynb`: Steps for normalizing hashtags.
-- `4_frequent_patterns.ipynb`: Notebook focusing on frequent pattern mining.
+- `4_frequent_patterns.ipynb`: Notebook focusing on frequent pattern mining using MLextend.
 - `5_frequent_patterns_pyspark.ipynb`: Frequent pattern mining using PySpark.
 - `notebooks/rest_service_performance_metrics.ipynb`: Performance metrics for the co-occurrence model.
 
@@ -147,5 +147,5 @@ docker build -t tag-recommender:latest -f docker/Dockerfile .
 ```
 Run the Docker Container
 ```bash
-docker run -p 8000:8000 tag-recommender:latest
+docker run --name tag-recommender -p 8000:8000 tag-recommender:latest
 ```

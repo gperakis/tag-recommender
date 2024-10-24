@@ -179,7 +179,7 @@ class Tag2VecModel(BaseMLModel):
         list[tuple[str, float]]
             The list of similar tags with their similarity scores.
         """
-        if self.model is None:
+        if self.knn is None:
             raise ValueError("No model found. Please train or load a model first.")
 
         if self.normalize:
