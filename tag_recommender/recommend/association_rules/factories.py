@@ -48,4 +48,4 @@ if __name__ == "__main__":
 
     logging.basicConfig(level=logging.INFO)
     train_tag_rules_model()
-    # evaluate_trained_tag_rules_model()
+    evaluate_trained_tag_rules_model()

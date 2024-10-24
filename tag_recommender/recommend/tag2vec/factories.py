@@ -42,3 +42,11 @@ def load_tag2vec_model() -> Tag2VecModel:
     tag2vec = create_tag2vec_model()
     tag2vec.load_model()
     return tag2vec
+
+
+if __name__ == "__main__":
+    import logging
+
+    logging.basicConfig(level=logging.INFO)
+    train_tag2vec_model()
+    evaluate_trained_tag2vec_model()

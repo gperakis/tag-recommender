@@ -39,3 +39,10 @@ def load_co_occur_inference_model() -> CoOccurrenceModel:
     if not model.knn:
         raise ValueError("No model found. Please train or load a model first.")
     return model
+
+
+if __name__ == "__main__":
+    import logging
+
+    logging.basicConfig(level=logging.INFO)
+    train_co_occur_model()
