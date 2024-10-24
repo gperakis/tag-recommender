@@ -5,6 +5,7 @@ import pandas as pd
 import pytrec_eval
 from tqdm import tqdm
 
+from tag_recommender.infer import MultiModelInference
 from tag_recommender.recommend.base import BaseMLModel
 from tag_recommender.utils.text import normalize_hashtags
 
@@ -78,7 +79,7 @@ class Evaluator:
         ):
             # Handle both strings and lists
             if isinstance(entry, str):
-                # Split and normalize the tags
+                # Split (and normalize) the tags
                 row_tags = self.split_tags_func(entry)
             else:
                 # The tags are already split and normalized
@@ -92,6 +93,10 @@ class Evaluator:
             # Ground truth relevance (1 for ALL hashtags in the same sample)
             row_tags_hash = {tag: 1 for tag in row_tags}
 
+            if len(row_tags_hash) < 2:
+                # Cannot evaluate with less than 2 tags
+                continue
+
             for tag in row_tags_hash:
                 if not model.tag_exists(tag):
                     continue
@@ -103,8 +108,11 @@ class Evaluator:
                 # Ground truth relevance without OOV hashtags
                 gt_without_oov_h = {htag: 1 for htag in gt_h if model.tag_exists(htag)}
 
-                ground_truth[row_key][tag] = gt_h
-                ground_truth_without_oov[row_key][tag] = gt_without_oov_h
+                if gt_h:  # if the ground truth is not empty
+                    ground_truth[row_key][tag] = gt_h
+
+                if gt_without_oov_h:  # maybe all the tags are OOV
+                    ground_truth_without_oov[row_key][tag] = gt_without_oov_h
 
         logger.info("Evaluation data prepared.")
         self.ground_truth = ground_truth
@@ -197,7 +205,7 @@ class Evaluator:
 
     def calculate_retrieval_metrics(
         self,
-        model: BaseMLModel,
+        model: BaseMLModel | MultiModelInference,
         corpus: list[str] | list[list[str]],
         ks: list[int] | None = None,
     ):
@@ -234,8 +242,12 @@ class Evaluator:
             - gt_metrics_without_oov: The aggregated metrics for all rows without
                 OOV hashtags.
         """
-        if self.ground_truth is None or self.ground_truth_without_oov is None:
+        if corpus:
+            logger.info("Preparing evaluation data using the provided corpus")
             self.prepare_eval_data(corpus=corpus, model=model)
+        else:
+            if self.ground_truth is None or self.ground_truth_without_oov is None:
+                raise ValueError("Corpus is required for the evaluation run.")
 
         if ks is None:
             ks = [3, 5]
