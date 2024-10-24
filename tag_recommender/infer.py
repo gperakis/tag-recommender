@@ -20,6 +20,51 @@ class MultiModelInference:
         self.models = models
         self.k = k
 
+    def tag_exists(self, tag):
+        """
+        Helper method for the evaluation of the combined methodology
+
+        Returns
+        -------
+        bool
+            True if the tag exists in any of the models, False otherwise
+        """
+        exists = False
+        for model in self.models:
+            if model.tag_exists(tag):
+                exists = True
+                break
+
+        return exists
+
+    def recommend(self, tag, topn=30):
+        """
+        Recommend tags for a given tag using Reciprocal Rank Fusion (RRF).
+
+        Parameters
+        ----------
+        tag : str
+            The tag for which to recommend similar tags.
+        topn : int (default: 30)
+            The number of similar hashtags to recommend.
+
+        Returns
+        -------
+
+        """
+        rrf_scores = defaultdict(float)
+
+        for model in self.models:
+            recommendations = model.recommend(tag, topn)
+            for rank, (recommended_tag, _) in enumerate(recommendations, start=1):
+                rrf_scores[recommended_tag] += 1 / (self.k + rank)
+
+        sorted_recommendations = sorted(
+            rrf_scores.items(), key=lambda x: x[1], reverse=True
+        )
+
+        return sorted_recommendations[:topn]
+
     def predict(self, tags: list[str], topn=10):
         """
         Infer tags using Reciprocal Rank Fusion (RRF) for multiple input tags.
