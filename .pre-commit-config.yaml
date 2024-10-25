@@ -8,7 +8,6 @@ repos:
       - id: mixed-line-ending
       - id: check-yaml
         exclude: ^(.*README.md|data/|notebooks/|.*.csv|deployment/)
-      - id: requirements-txt-fixer
       - id: check-added-large-files
         args: [--maxkb=1024]
       - id: check-json
