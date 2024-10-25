@@ -136,7 +136,9 @@ Navigate to the notebooks/ directory where you will find the following notebooks
 - `3_hashtags_normalization.ipynb`: Steps for normalizing hashtags.
 - `4_frequent_patterns.ipynb`: Notebook focusing on frequent pattern mining using MLextend.
 - `5_frequent_patterns_pyspark.ipynb`: Frequent pattern mining using PySpark.
-- `notebooks/rest_service_performance_metrics.ipynb`: Performance metrics for the co-occurrence model.
+- `6_topic_modeling.ipynb`: Topic modeling using Bertopic.
+- `7_tag_popularity_and_graph.ipynb`: Tag popularity and graph analysis.
+- `8_rest_service_performance_metrics.ipynb`: Performance metrics for REST service
 
 ## 🐳 Docker Setup
 You can also use Docker to containerize the application.
